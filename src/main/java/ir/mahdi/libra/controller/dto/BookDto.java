@@ -3,9 +3,13 @@ package ir.mahdi.libra.controller.dto;
 import ir.mahdi.libra.model.Book;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto {
     @Positive(message = "Id must be positive")
     private Long id;
@@ -16,7 +20,7 @@ public class BookDto {
     @Positive(message = "Release year must be positive")
     private int releaseYear;
 
-    public static BookDto of(Book book){
+    public static BookDto of(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
