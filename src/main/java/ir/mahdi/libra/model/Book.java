@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Book extends Asset{
+public class Book extends Asset {
     private String author;
     private int releaseYear;
 
@@ -15,7 +15,7 @@ public class Book extends Asset{
         this.releaseYear = releaseYear;
     }
 
-    public Book(Long id, String title, String author, int releaseYear) {
+    public Book(long id, String title, String author, int releaseYear) {
         super(id, title);
         this.author = author;
         this.releaseYear = releaseYear;

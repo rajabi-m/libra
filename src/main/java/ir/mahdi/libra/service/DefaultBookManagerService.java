@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DefaultBookCrudService implements BookCrudService {
+public class DefaultBookManagerService implements BookManagerService {
     private final BookRepository bookRepository;
 
-    public DefaultBookCrudService(BookRepository bookRepository) {
+    public DefaultBookManagerService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
@@ -24,18 +24,18 @@ public class DefaultBookCrudService implements BookCrudService {
     }
 
     @Override
-    public BookDto getBook(Long id) {
+    public BookDto getBook(long id) {
         Book book = bookRepository.findById(id);
-        if (book == null){
+        if (book == null) {
             return null;
         }
         return BookDto.of(book);
     }
 
     @Override
-    public BookDto updateBook(Long id, CreateBookDto createBookDto) {
+    public BookDto updateBook(long id, CreateBookDto createBookDto) {
         Book book = bookRepository.findById(id);
-        if (book == null){
+        if (book == null) {
             return null;
         }
         book.setTitle(createBookDto.getTitle());
@@ -46,12 +46,17 @@ public class DefaultBookCrudService implements BookCrudService {
     }
 
     @Override
-    public void deleteBook(Long id) {
+    public void deleteBook(long id) {
         bookRepository.deleteById(id);
     }
 
     @Override
     public List<BookDto> getAllBooks() {
         return bookRepository.findAll().stream().map(BookDto::of).toList();
+    }
+
+    @Override
+    public List<BookDto> findBooksByTitle(String title) {
+        return bookRepository.findBooksByTitle(title).stream().map(BookDto::of).toList();
     }
 }

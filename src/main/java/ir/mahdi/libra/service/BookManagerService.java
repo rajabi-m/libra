@@ -5,10 +5,16 @@ import ir.mahdi.libra.controller.dto.CreateBookDto;
 
 import java.util.List;
 
-public interface BookCrudService {
+public interface BookManagerService {
     BookDto createBook(CreateBookDto createBookDto);
-    BookDto getBook(Long id);
-    BookDto updateBook(Long id, CreateBookDto createBookDto);
-    void deleteBook(Long id);
+
+    BookDto getBook(long id);
+
+    BookDto updateBook(long id, CreateBookDto createBookDto);
+
+    void deleteBook(long id);
+
     List<BookDto> getAllBooks();
+
+    List<BookDto> findBooksByTitle(String title);
 }

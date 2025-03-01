@@ -6,8 +6,14 @@ import java.util.List;
 
 public interface BookRepository {
     void save(Book book);
-    Book findById(Long id);
+
+    Book findById(long id);
+
+    void deleteById(long id);
+
     List<Book> findAll();
-    void deleteById(Long id);
+
     void update(Book book);
+
+    List<Book> findBooksByTitle(String title);
 }
