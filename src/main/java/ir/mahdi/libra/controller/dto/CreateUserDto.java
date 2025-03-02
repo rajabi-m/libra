@@ -1,9 +1,11 @@
 package ir.mahdi.libra.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CreateUserDto {
     @NotBlank(message = "Username is required")
     private String username;

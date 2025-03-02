@@ -1,9 +1,6 @@
 package ir.mahdi.libra.service;
 
-import ir.mahdi.libra.controller.dto.BookDto;
-import ir.mahdi.libra.controller.dto.BorrowDto;
-import ir.mahdi.libra.controller.dto.CreateBorrowDto;
-import ir.mahdi.libra.controller.dto.UserDto;
+import ir.mahdi.libra.controller.dto.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public interface BorrowManagerService {
 
     BorrowDto createBorrow(CreateBorrowDto createBorrowDto);
 
-    BorrowDto updateBorrow(Long id, CreateBorrowDto createBorrowDto);
+    BorrowDto updateBorrow(Long id, UpdateBookDto updateBookDto);
 
     void deleteBorrow(Long id);
 

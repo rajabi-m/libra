@@ -1,9 +1,6 @@
 package ir.mahdi.libra.controller;
 
-import ir.mahdi.libra.controller.dto.BookDto;
-import ir.mahdi.libra.controller.dto.BorrowDto;
-import ir.mahdi.libra.controller.dto.CreateBorrowDto;
-import ir.mahdi.libra.controller.dto.UserDto;
+import ir.mahdi.libra.controller.dto.*;
 import ir.mahdi.libra.service.BorrowManagerService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +32,8 @@ public class BorrowController {
     }
 
     @PutMapping("/update/{id}")
-    public BorrowDto updateBorrow(@PathVariable Long id, @Valid @RequestBody CreateBorrowDto createBorrowDto) {
-        return borrowManagerService.updateBorrow(id, createBorrowDto);
+    public BorrowDto updateBorrow(@PathVariable Long id, @Valid @RequestBody UpdateBookDto updateBookDto) {
+        return borrowManagerService.updateBorrow(id, updateBookDto);
     }
 
     @DeleteMapping("/delete/{id}")

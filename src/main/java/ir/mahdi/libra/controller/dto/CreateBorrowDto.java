@@ -2,11 +2,13 @@ package ir.mahdi.libra.controller.dto;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 public class CreateBorrowDto {
     @Positive(message = "User ID must be positive")
     private long userId;

@@ -4,16 +4,21 @@ import ir.mahdi.libra.controller.dto.BookDto;
 import ir.mahdi.libra.controller.dto.CreateBookDto;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.repository.BookRepository;
+import jakarta.annotation.PostConstruct;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DefaultBookManagerService implements BookManagerService {
     private final BookRepository bookRepository;
+    private final Environment environment;
 
-    public DefaultBookManagerService(BookRepository bookRepository) {
+    public DefaultBookManagerService(BookRepository bookRepository, Environment environment) {
         this.bookRepository = bookRepository;
+        this.environment = environment;
     }
 
     @Override
@@ -63,5 +68,18 @@ public class DefaultBookManagerService implements BookManagerService {
     @Override
     public List<BookDto> findBooksByTitle(String title) {
         return bookRepository.findBooksByTitle(title).stream().map(BookDto::of).toList();
+    }
+
+    @PostConstruct
+    public void init() {
+        if (!Objects.equals(environment.getProperty("application.debug"), "true")) {
+            return;
+        }
+
+        createBook(new CreateBookDto("The Great Gatsby", "F. Scott Fitzgerald", 1925));
+        createBook(new CreateBookDto("To Kill a Mockingbird", "Harper Lee", 1960));
+        createBook(new CreateBookDto("1984", "George Orwell", 1949));
+        createBook(new CreateBookDto("Animal Farm", "George Orwell", 1945));
+        createBook(new CreateBookDto("Brave New World", "Aldous Huxley", 1932));
     }
 }

@@ -4,23 +4,15 @@ import ir.mahdi.libra.exception.NotFoundException;
 import ir.mahdi.libra.exception.NotUniqueException;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.utils.ReflectionUtils;
-import jakarta.annotation.PostConstruct;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class DefaultUserRepository implements UserRepository {
     private final HashMap<Long, User> users = new HashMap<>();
     private long idCounter = 0;
-    private final Environment environment;
-
-    public DefaultUserRepository(Environment environment) {
-        this.environment = environment;
-    }
 
     @Override
     public void save(User user) {
@@ -93,23 +85,5 @@ public class DefaultUserRepository implements UserRepository {
     private boolean isUsernameNotUnique(User user, String username) {
         User userWithSameUsername = findByUsernameNullable(username);
         return userWithSameUsername != null && userWithSameUsername.getId() != user.getId();
-    }
-
-    @PostConstruct
-    public void init() {
-        if (!Objects.equals(environment.getProperty("application.debug"), "true")) {
-            return;
-        }
-        User user1 = new User("user1");
-        User user2 = new User("user2");
-        User user3 = new User("user3");
-        User user4 = new User("user4");
-        User user5 = new User("user5");
-
-        save(user1);
-        save(user2);
-        save(user3);
-        save(user4);
-        save(user5);
     }
 }
