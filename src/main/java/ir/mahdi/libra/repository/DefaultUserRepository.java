@@ -1,8 +1,7 @@
 package ir.mahdi.libra.repository;
 
-import ir.mahdi.libra.exception.IdNotFoundException;
-import ir.mahdi.libra.exception.UsernameIsNotUniqueException;
-import ir.mahdi.libra.exception.UsernameNotFoundException;
+import ir.mahdi.libra.exception.NotFoundException;
+import ir.mahdi.libra.exception.NotUniqueException;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.utils.ReflectionUtils;
 import jakarta.annotation.PostConstruct;
@@ -30,7 +29,7 @@ public class DefaultUserRepository implements UserRepository {
         }
 
         if (isUsernameNotUnique(user, user.getUsername())) {
-            throw new UsernameIsNotUniqueException("Username is already taken");
+            throw new NotUniqueException("Username is already taken");
         }
 
         idCounter++;
@@ -42,7 +41,7 @@ public class DefaultUserRepository implements UserRepository {
     @Override
     public User findById(long id) {
         if (!users.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find user with id: " + id);
+            throw new NotFoundException("Cannot find user with id: " + id);
         }
         return users.get(id);
     }
@@ -51,7 +50,7 @@ public class DefaultUserRepository implements UserRepository {
     public User findByUsername(String username) {
         User user = findByUsernameNullable(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Cannot find user with username: " + username);
+            throw new NotFoundException("Cannot find user with username: " + username);
         }
         return user;
     }
@@ -66,7 +65,7 @@ public class DefaultUserRepository implements UserRepository {
     @Override
     public void deleteById(long id) {
         if (!users.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find user with id: " + id);
+            throw new NotFoundException("Cannot find user with id: " + id);
         }
         users.remove(id);
     }
@@ -82,10 +81,10 @@ public class DefaultUserRepository implements UserRepository {
             throw new NullPointerException("User cannot be null");
         }
         if (!users.containsKey(user.getId())) {
-            throw new IdNotFoundException("Cannot find user with id: " + user.getId());
+            throw new NotFoundException("Cannot find user with id: " + user.getId());
         }
         if (isUsernameNotUnique(user, user.getUsername())) {
-            throw new UsernameIsNotUniqueException("Username is already taken");
+            throw new NotUniqueException("Username is already taken");
         }
 
         users.put(user.getId(), user);

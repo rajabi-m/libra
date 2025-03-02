@@ -1,6 +1,6 @@
 package ir.mahdi.libra.repository;
 
-import ir.mahdi.libra.exception.IdNotFoundException;
+import ir.mahdi.libra.exception.NotFoundException;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.model.Borrow;
 import ir.mahdi.libra.model.User;
@@ -38,8 +38,8 @@ public class DefaultBorrowRepository implements BorrowRepository {
         try {
             userRepository.findById(borrow.getUserId());
             bookRepository.findById(borrow.getBookId());
-        } catch (IdNotFoundException e) {
-            throw new IdNotFoundException(e);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e);
         }
 
         idCounter++;
@@ -52,7 +52,7 @@ public class DefaultBorrowRepository implements BorrowRepository {
     @Override
     public Borrow findById(long id) {
         if (!borrows.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find borrow with id: " + id);
+            throw new NotFoundException("Cannot find borrow with id: " + id);
         }
         return borrows.get(id);
     }
@@ -60,7 +60,7 @@ public class DefaultBorrowRepository implements BorrowRepository {
     @Override
     public void deleteById(long id) {
         if (!borrows.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find borrow with id: " + id);
+            throw new NotFoundException("Cannot find borrow with id: " + id);
         }
         borrows.remove(id);
     }
@@ -92,7 +92,7 @@ public class DefaultBorrowRepository implements BorrowRepository {
             throw new NullPointerException();
         }
         if (!borrows.containsKey(borrow.getId())) {
-            throw new IdNotFoundException("Cannot find borrow with id: " + borrow.getId());
+            throw new NotFoundException("Cannot find borrow with id: " + borrow.getId());
         }
         borrows.put(borrow.getId(), borrow);
     }

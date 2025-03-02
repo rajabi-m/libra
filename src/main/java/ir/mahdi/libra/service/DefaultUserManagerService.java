@@ -45,4 +45,9 @@ public class DefaultUserManagerService implements UserManagerService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public UserDto getUserByUsername(String username) {
+        return UserDto.of(userRepository.findByUsername(username));
+    }
 }

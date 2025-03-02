@@ -1,6 +1,6 @@
 package ir.mahdi.libra.repository;
 
-import ir.mahdi.libra.exception.IdNotFoundException;
+import ir.mahdi.libra.exception.NotFoundException;
 import ir.mahdi.libra.model.Asset;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.utils.ReflectionUtils;
@@ -36,7 +36,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public Book findById(long id) {
         if (!books.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find book with id: " + id);
+            throw new NotFoundException("Cannot find book with id: " + id);
         }
         return books.get(id);
     }
@@ -44,7 +44,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public void deleteById(long id) {
         if (!books.containsKey(id)) {
-            throw new IdNotFoundException("Cannot find book with id: " + id);
+            throw new NotFoundException("Cannot find book with id: " + id);
         }
         books.remove(id);
     }
@@ -60,7 +60,7 @@ public class DefaultBookRepository implements BookRepository {
             throw new NullPointerException();
         }
         if (!books.containsKey(book.getId())) {
-            throw new IdNotFoundException("Cannot find book with id: " + book.getId());
+            throw new NotFoundException("Cannot find book with id: " + book.getId());
         }
         books.put(book.getId(), book);
     }

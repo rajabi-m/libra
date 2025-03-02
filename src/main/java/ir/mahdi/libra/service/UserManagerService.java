@@ -16,4 +16,6 @@ public interface UserManagerService {
     UserDto updateUser(Long id, @Valid CreateUserDto createUserDto);
 
     void deleteUser(Long id);
+
+    UserDto getUserByUsername(String username);
 }

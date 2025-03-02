@@ -43,12 +43,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<Error> handleIdNotFoundException(IdNotFoundException ex) {
-        return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Error> handleException(Exception ex) {
         if (Objects.equals(environment.getProperty("application.debug"), "true")) {
@@ -57,14 +51,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Error.of("Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UsernameIsNotUniqueException.class)
-    public ResponseEntity<Error> handleUsernameIsNotUniqueException(UsernameIsNotUniqueException ex) {
+    @ExceptionHandler(NotUniqueException.class)
+    public ResponseEntity<Error> handleUsernameIsNotUniqueException(NotUniqueException ex) {
         return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<Error> handleDateTimeParseException(DateTimeParseException ignored) {
         return new ResponseEntity<>(Error.of("Invalid date format"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Error> handleNotFoundException(NotFoundException ex) {
+        return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
 
