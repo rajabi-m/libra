@@ -2,6 +2,7 @@ package ir.mahdi.libra.repository;
 
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.model.Borrow;
+import ir.mahdi.libra.model.User;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public interface BorrowRepository {
 
     List<Book> getUserBorrows(long userId);
 
-    List<Borrow> getAssetBorrows(long assetId);
+    List<User> getAssetBorrowers(long assetId);
 
     List<Borrow> findAll();
+
+    void update(Borrow borrow);
 }

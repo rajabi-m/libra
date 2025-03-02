@@ -3,22 +3,22 @@ package ir.mahdi.libra.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class Borrow {
     private final long id;
-    private final long userId;
-    private final long assetId;
-    private final Date borrowDate;
-    private final Date returnDate;
+    private long userId;
+    private long bookId;
+    private final LocalDate borrowDate;
+    private LocalDate returnDate;
 
-    public Borrow(long userId, long assetId, Date borrowDate, Date returnDate) {
+    public Borrow(long userId, long bookId, LocalDate returnDate) {
         id = -1;
+        borrowDate = null;
         this.userId = userId;
-        this.assetId = assetId;
-        this.borrowDate = borrowDate;
+        this.bookId = bookId;
         this.returnDate = returnDate;
     }
 }

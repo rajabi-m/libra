@@ -5,6 +5,7 @@ import ir.mahdi.libra.exception.UsernameIsNotUniqueException;
 import ir.mahdi.libra.exception.UsernameNotFoundException;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.utils.ReflectionUtils;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class DefaultUserRepository implements UserRepository {
     private final HashMap<Long, User> users = new HashMap<>();
+    private long idCounter = 0;
 
     @Override
     public void save(User user) {
@@ -24,8 +26,9 @@ public class DefaultUserRepository implements UserRepository {
             throw new UsernameIsNotUniqueException("Username is already taken");
         }
 
-        long userId = user.getId() == -1 ? users.size() + 1 : user.getId();
-        ReflectionUtils.changeId(user, userId);
+        idCounter++;
+        long userId = idCounter;
+        ReflectionUtils.setId(user, userId, User.class);
         users.put(userId, user);
     }
 
@@ -84,5 +87,20 @@ public class DefaultUserRepository implements UserRepository {
     private boolean isUsernameNotUnique(User user, String username) {
         User userWithSameUsername = findByUsernameNullable(username);
         return userWithSameUsername != null && userWithSameUsername.getId() != user.getId();
+    }
+
+    @PostConstruct
+    public void init() {
+        User user1 = new User("user1");
+        User user2 = new User("user2");
+        User user3 = new User("user3");
+        User user4 = new User("user4");
+        User user5 = new User("user5");
+
+        save(user1);
+        save(user2);
+        save(user3);
+        save(user4);
+        save(user5);
     }
 }

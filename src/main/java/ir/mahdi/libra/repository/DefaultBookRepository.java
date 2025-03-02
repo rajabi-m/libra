@@ -1,8 +1,10 @@
 package ir.mahdi.libra.repository;
 
 import ir.mahdi.libra.exception.IdNotFoundException;
+import ir.mahdi.libra.model.Asset;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.utils.ReflectionUtils;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,14 +13,16 @@ import java.util.List;
 @Component
 public class DefaultBookRepository implements BookRepository {
     private final HashMap<Long, Book> books = new HashMap<>();
+    private long idCounter = 0;
 
     @Override
     public void save(Book book) {
         if (book == null) {
             throw new NullPointerException();
         }
-        long bookId = book.getId() == -1 ? books.size() + 1 : book.getId();
-        ReflectionUtils.changeId(book, bookId);
+        idCounter++;
+        long bookId = idCounter;
+        ReflectionUtils.setId(book, bookId, Asset.class);
         books.put(bookId, book);
     }
 
@@ -57,5 +61,19 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> findBooksByTitle(String title) {
         return books.values().stream().filter(book -> book.getTitle().equals(title)).toList();
+    }
+
+    @PostConstruct
+    public void init() {
+        save(new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925));
+        save(new Book("To Kill a Mockingbird", "Harper Lee", 1960));
+        save(new Book("1984", "George Orwell", 1949));
+        save(new Book("Pride and Prejudice", "Jane Austen", 1813));
+        save(new Book("The Catcher in the Rye", "J.D. Salinger", 1951));
+        save(new Book("The Lord of the Rings", "J.R.R. Tolkien", 1954));
+        save(new Book("Animal Farm", "George Orwell", 1945));
+        save(new Book("The Hobbit", "J.R.R. Tolkien", 1937));
+        save(new Book("The Little Prince", "Antoine de Saint-Exupéry", 1943));
+        save(new Book("Brave New World", "Aldous Huxley", 1932));
     }
 }
