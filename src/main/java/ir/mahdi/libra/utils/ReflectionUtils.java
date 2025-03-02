@@ -1,13 +1,13 @@
 package ir.mahdi.libra.utils;
 
-import ir.mahdi.libra.model.Asset;
+import java.lang.reflect.Field;
 
 public abstract class ReflectionUtils {
-    public static void changeId(Object object, long assetId) {
+    public static void changeId(Object object, long id) {
         try {
-            java.lang.reflect.Field idField = Asset.class.getDeclaredField("id");
+            Field idField = object.getClass().getDeclaredField("id");
             idField.setAccessible(true);
-            idField.set(object, assetId);
+            idField.set(object, id);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

@@ -1,14 +1,11 @@
 package ir.mahdi.libra.model;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor
 public class User {
-    @Setter(AccessLevel.NONE)
     private final long id;
     private String username;
 

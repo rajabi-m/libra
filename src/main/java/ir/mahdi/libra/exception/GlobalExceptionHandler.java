@@ -56,6 +56,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Error.of("Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(UsernameIsNotUniqueException.class)
+    public ResponseEntity<Error> handleUsernameIsNotUniqueException(UsernameIsNotUniqueException ex) {
+        return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 
     public record Error(List<String> errors) {
         public static Error of(String message) {

@@ -5,10 +5,12 @@ import ir.mahdi.libra.exception.UsernameIsNotUniqueException;
 import ir.mahdi.libra.exception.UsernameNotFoundException;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.utils.ReflectionUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class DefaultUserRepository implements UserRepository {
     private final HashMap<Long, User> users = new HashMap<>();
 
@@ -18,7 +20,7 @@ public class DefaultUserRepository implements UserRepository {
             throw new NullPointerException("User cannot be null");
         }
 
-        if (!isUsernameUnique(user, user.getUsername())) {
+        if (isUsernameNotUnique(user, user.getUsername())) {
             throw new UsernameIsNotUniqueException("Username is already taken");
         }
 
@@ -72,14 +74,15 @@ public class DefaultUserRepository implements UserRepository {
         if (!users.containsKey(user.getId())) {
             throw new IdNotFoundException("Cannot find user with id: " + user.getId());
         }
-        if (!isUsernameUnique(user, user.getUsername())) {
+        if (isUsernameNotUnique(user, user.getUsername())) {
             throw new UsernameIsNotUniqueException("Username is already taken");
         }
-        
+
         users.put(user.getId(), user);
     }
 
-    private boolean isUsernameUnique(User user, String username) {
-        return findByUsername(username) == null || findByUsername(username).getId() == user.getId();
+    private boolean isUsernameNotUnique(User user, String username) {
+        User userWithSameUsername = findByUsernameNullable(username);
+        return userWithSameUsername != null && userWithSameUsername.getId() != user.getId();
     }
 }
