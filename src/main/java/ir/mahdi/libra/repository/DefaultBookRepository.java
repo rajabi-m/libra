@@ -5,15 +5,22 @@ import ir.mahdi.libra.model.Asset;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.utils.ReflectionUtils;
 import jakarta.annotation.PostConstruct;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class DefaultBookRepository implements BookRepository {
     private final HashMap<Long, Book> books = new HashMap<>();
     private long idCounter = 0;
+    private final Environment environment;
+
+    public DefaultBookRepository(Environment environment) {
+        this.environment = environment;
+    }
 
     @Override
     public void save(Book book) {
@@ -65,6 +72,9 @@ public class DefaultBookRepository implements BookRepository {
 
     @PostConstruct
     public void init() {
+        if (!Objects.equals(environment.getProperty("application.debug"), "true")) {
+            return;
+        }
         save(new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925));
         save(new Book("To Kill a Mockingbird", "Harper Lee", 1960));
         save(new Book("1984", "George Orwell", 1949));

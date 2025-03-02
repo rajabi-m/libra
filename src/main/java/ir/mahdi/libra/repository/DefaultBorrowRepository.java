@@ -6,21 +6,25 @@ import ir.mahdi.libra.model.Borrow;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.utils.ReflectionUtils;
 import jakarta.annotation.PostConstruct;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DefaultBorrowRepository implements BorrowRepository {
     private final HashMap<Long, Borrow> borrows = new HashMap<>();
     private long idCounter = 0;
+    private final Environment environment;
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    public DefaultBorrowRepository(BookRepository bookRepository, UserRepository userRepository) {
+    public DefaultBorrowRepository(Environment environment, BookRepository bookRepository, UserRepository userRepository) {
+        this.environment = environment;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
@@ -95,6 +99,9 @@ public class DefaultBorrowRepository implements BorrowRepository {
 
     @PostConstruct
     public void init() {
+        if (!Objects.equals(environment.getProperty("application.debug"), "true")) {
+            return;
+        }
         // Add some initial borrows
         Borrow borrow1 = new Borrow(1, 1, LocalDate.now().plusDays(2));
         Borrow borrow2 = new Borrow(2, 2, LocalDate.now().plusDays(1));
