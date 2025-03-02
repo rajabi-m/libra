@@ -8,6 +8,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +64,13 @@ public class DefaultBookRepository implements BookRepository {
             throw new NotFoundException("Cannot find book with id: " + book.getId());
         }
         books.put(book.getId(), book);
+    }
+
+    @Override
+    public List<Book> findAllSortByReleaseYear() {
+        return books.values().stream()
+                .sorted(Comparator.comparingInt(Book::getReleaseYear))
+                .toList();
     }
 
     @Override

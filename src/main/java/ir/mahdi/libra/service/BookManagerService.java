@@ -16,5 +16,7 @@ public interface BookManagerService {
 
     List<BookDto> getAllBooks();
 
+    List<BookDto> getAllBooksSortByReleaseYear();
+
     List<BookDto> findBooksByTitle(String title);
 }

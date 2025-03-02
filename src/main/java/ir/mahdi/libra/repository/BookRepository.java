@@ -15,5 +15,7 @@ public interface BookRepository {
 
     void update(Book book);
 
+    List<Book> findAllSortByReleaseYear();
+
     List<Book> findBooksByTitle(String title);
 }

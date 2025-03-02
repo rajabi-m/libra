@@ -56,6 +56,11 @@ public class DefaultBookManagerService implements BookManagerService {
     }
 
     @Override
+    public List<BookDto> getAllBooksSortByReleaseYear() {
+        return bookRepository.findAllSortByReleaseYear().stream().map(BookDto::of).toList();
+    }
+
+    @Override
     public List<BookDto> findBooksByTitle(String title) {
         return bookRepository.findBooksByTitle(title).stream().map(BookDto::of).toList();
     }

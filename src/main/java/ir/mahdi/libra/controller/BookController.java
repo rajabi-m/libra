@@ -29,6 +29,11 @@ public class BookController {
         return ResponseEntity.ok(bookDto);
     }
 
+    @GetMapping("/sort")
+    public List<BookDto> getBooksSortByReleaseYear() {
+        return bookManagerService.getAllBooksSortByReleaseYear();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto createBookDto) {
         return ResponseEntity.ok(bookManagerService.createBook(createBookDto));
