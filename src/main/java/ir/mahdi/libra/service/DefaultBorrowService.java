@@ -1,5 +1,7 @@
 package ir.mahdi.libra.service;
 
+import ir.mahdi.libra.controller.dto.AssetCountDto;
+import ir.mahdi.libra.controller.dto.AssetDto;
 import ir.mahdi.libra.controller.dto.BorrowAssetDto;
 import ir.mahdi.libra.exception.NotAvailableException;
 import ir.mahdi.libra.exception.NotFoundException;
@@ -10,9 +12,11 @@ import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.repository.BorrowHistoryRepository;
 import ir.mahdi.libra.repository.BorrowableAssetRepository;
 import ir.mahdi.libra.repository.UserRepository;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +78,13 @@ public class DefaultBorrowService implements BorrowService {
         asset.get().setBorrowDate(null);
         asset.get().setReturnDate(null);
         borrowableAssetRepository.save(asset.get());
+    }
+
+    @Override
+    public List<AssetCountDto> getMostBorrowedAssetsSorted() {
+        List<Pair<BorrowableAsset, Long>> mostBorrowedAssets = borrowHistoryRepository.findMostBorrowedAssetsSorted();
+        return mostBorrowedAssets.stream()
+                .map(pair -> new AssetCountDto(AssetDto.of(pair.getFirst()), pair.getSecond()))
+                .toList();
     }
 }
