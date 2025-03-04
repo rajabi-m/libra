@@ -1,21 +1,10 @@
 package ir.mahdi.libra.repository;
 
 import ir.mahdi.libra.model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Collection;
 
-public interface BookRepository {
-    void save(Book book);
-
-    Book findById(long id);
-
-    void deleteById(long id);
-
-    List<Book> findAll();
-
-    void update(Book book);
-
-    List<Book> findAllSortByReleaseYear();
-
-    List<Book> findBooksByTitle(String title);
+public interface BookRepository extends JpaRepository<Book, Long> {
+    Collection<Book> findByTitle(String title);
 }

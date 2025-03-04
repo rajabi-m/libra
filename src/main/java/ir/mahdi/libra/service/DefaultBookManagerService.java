@@ -2,14 +2,17 @@ package ir.mahdi.libra.service;
 
 import ir.mahdi.libra.controller.dto.BookDto;
 import ir.mahdi.libra.controller.dto.CreateBookDto;
+import ir.mahdi.libra.exception.NotFoundException;
 import ir.mahdi.libra.model.Book;
 import ir.mahdi.libra.repository.BookRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DefaultBookManagerService implements BookManagerService {
@@ -30,24 +33,24 @@ public class DefaultBookManagerService implements BookManagerService {
 
     @Override
     public BookDto getBook(long id) {
-        Book book = bookRepository.findById(id);
-        if (book == null) {
-            return null;
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
+            throw new NotFoundException("Cannot find book with id: " + id);
         }
-        return BookDto.of(book);
+        return BookDto.of(book.get());
     }
 
     @Override
     public BookDto updateBook(long id, CreateBookDto createBookDto) {
-        Book book = bookRepository.findById(id);
-        if (book == null) {
-            return null;
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
+            throw new NotFoundException("Cannot find book with id: " + id);
         }
-        book.setTitle(createBookDto.getTitle());
-        book.setAuthor(createBookDto.getAuthor());
-        book.setReleaseYear(createBookDto.getReleaseYear());
-        bookRepository.update(book);
-        return BookDto.of(book);
+        book.get().setTitle(createBookDto.getTitle());
+        book.get().setAuthor(createBookDto.getAuthor());
+        book.get().setReleaseYear(createBookDto.getReleaseYear());
+        bookRepository.save(book.get());
+        return BookDto.of(book.get());
     }
 
     @Override
@@ -62,12 +65,14 @@ public class DefaultBookManagerService implements BookManagerService {
 
     @Override
     public List<BookDto> getAllBooksSortByReleaseYear() {
-        return bookRepository.findAllSortByReleaseYear().stream().map(BookDto::of).toList();
+        return bookRepository.findAll().stream().sorted(
+                Comparator.comparingInt(Book::getReleaseYear)
+        ).map(BookDto::of).toList();
     }
 
     @Override
     public List<BookDto> findBooksByTitle(String title) {
-        return bookRepository.findBooksByTitle(title).stream().map(BookDto::of).toList();
+        return bookRepository.findByTitle(title).stream().map(BookDto::of).toList();
     }
 
     @PostConstruct

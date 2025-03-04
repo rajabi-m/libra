@@ -1,5 +1,6 @@
 package ir.mahdi.libra.controller;
 
+import ir.mahdi.libra.controller.dto.BorrowHistoryDto;
 import ir.mahdi.libra.controller.dto.CreateUserDto;
 import ir.mahdi.libra.controller.dto.UserDto;
 import ir.mahdi.libra.service.UserManagerService;
@@ -51,5 +52,10 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userManagerService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{id}/borrow-history")
+    public List<BorrowHistoryDto> getBorrowHistory(@PathVariable Long id) {
+        return userManagerService.getBorrowHistory(id);
     }
 }

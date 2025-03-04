@@ -1,7 +1,10 @@
 package ir.mahdi.libra.service;
 
+import ir.mahdi.libra.controller.dto.BorrowHistoryDto;
 import ir.mahdi.libra.controller.dto.CreateUserDto;
 import ir.mahdi.libra.controller.dto.UserDto;
+import ir.mahdi.libra.exception.NotFoundException;
+import ir.mahdi.libra.model.BorrowHistory;
 import ir.mahdi.libra.model.User;
 import ir.mahdi.libra.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DefaultUserManagerService implements UserManagerService {
@@ -35,15 +39,19 @@ public class DefaultUserManagerService implements UserManagerService {
 
     @Override
     public UserDto getUserById(Long id) {
-        return UserDto.of(userRepository.findById(id));
+        Optional<User> user = userRepository.findById(id);
+        return user.map(UserDto::of).orElse(null);
     }
 
     @Override
     public UserDto updateUser(Long id, CreateUserDto createUserDto) {
-        User user = userRepository.findById(id);
-        user.setUsername(createUserDto.getUsername());
-        userRepository.update(user);
-        return UserDto.of(user);
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Cannot find user with id: " + id);
+        }
+        user.get().setUsername(createUserDto.getUsername());
+        userRepository.save(user.get());
+        return UserDto.of(user.get());
     }
 
     @Override
@@ -54,6 +62,17 @@ public class DefaultUserManagerService implements UserManagerService {
     @Override
     public UserDto getUserByUsername(String username) {
         return UserDto.of(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public List<BorrowHistoryDto> getBorrowHistory(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Cannot find user with id: " + id);
+        }
+
+        List<BorrowHistory> borrowHistory = user.get().getBorrowHistory();
+        return borrowHistory.stream().map(BorrowHistoryDto::of).toList();
     }
 
     @PostConstruct

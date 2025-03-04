@@ -1,16 +1,30 @@
 package ir.mahdi.libra.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class User {
-    private final long id;
+    @Id
+    @GeneratedValue
+    @Setter(AccessLevel.NONE)
+    private Long id;
     private String username;
 
+    @OneToOne(mappedBy = "borrower")
+    private BorrowableAsset borrowedAsset;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<BorrowHistory> borrowHistory;
+
     public User(String username) {
-        id = -1;
         this.username = username;
     }
 }
