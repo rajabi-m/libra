@@ -18,7 +18,7 @@ public class BookController {
         this.bookManagerService = bookManagerService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<BookDto> getBooks() {
         return bookManagerService.getAllBooks();
     }
@@ -34,18 +34,18 @@ public class BookController {
         return bookManagerService.getAllBooksSortByReleaseYear();
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto createBookDto) {
         return ResponseEntity.ok(bookManagerService.createBook(createBookDto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookManagerService.deleteBook(id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @Valid @RequestBody CreateBookDto createBookDto) {
         BookDto bookDto = bookManagerService.updateBook(id, createBookDto);
         return ResponseEntity.ok(bookDto);

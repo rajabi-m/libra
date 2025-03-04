@@ -16,7 +16,7 @@ public class BorrowController {
         this.borrowManagerService = borrowManagerService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<BorrowDto> getBorrows() {
         return borrowManagerService.getAllBorrows();
     }
@@ -26,17 +26,17 @@ public class BorrowController {
         return borrowManagerService.getBorrowById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public BorrowDto createBorrow(@Valid @RequestBody CreateBorrowDto createBorrowDto) {
         return borrowManagerService.createBorrow(createBorrowDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public BorrowDto updateBorrow(@PathVariable Long id, @Valid @RequestBody UpdateBookDto updateBookDto) {
         return borrowManagerService.updateBorrow(id, updateBookDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBorrow(@PathVariable Long id) {
         borrowManagerService.deleteBorrow(id);
     }

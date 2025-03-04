@@ -18,12 +18,12 @@ public class UserController {
         this.userManagerService = userManagerService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<UserDto> getUsers() {
         return userManagerService.getAllUsers();
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserDto createUserDto) {
         UserDto user = userManagerService.createUser(createUserDto);
         return ResponseEntity.ok(user);
@@ -35,19 +35,19 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/find/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
         UserDto userDto = userManagerService.getUserByUsername(username);
         return ResponseEntity.ok(userDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody CreateUserDto createUserDto) {
         UserDto userDto = userManagerService.updateUser(id, createUserDto);
         return ResponseEntity.ok(userDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userManagerService.deleteUser(id);
         return ResponseEntity.ok().build();
