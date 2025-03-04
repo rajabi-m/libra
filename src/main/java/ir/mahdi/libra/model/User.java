@@ -21,7 +21,7 @@ public class User {
     @OneToOne(mappedBy = "borrower")
     private BorrowableAsset borrowedAsset;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<BorrowHistory> borrowHistory;
 
     public User(String username) {

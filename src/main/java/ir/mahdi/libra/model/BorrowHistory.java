@@ -1,9 +1,6 @@
 package ir.mahdi.libra.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +22,11 @@ public class BorrowHistory {
     private LocalDate returnDate;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "asset_id")
     private BorrowableAsset asset;
 
     public BorrowHistory(LocalDate borrowDate, LocalDate returnDate, User user, BorrowableAsset asset) {

@@ -1,9 +1,6 @@
 package ir.mahdi.libra.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,6 +18,6 @@ public abstract class BorrowableAsset extends Asset {
     @JoinColumn(name = "borrower_id")
     private User borrower;
 
-    @OneToMany
+    @OneToMany(mappedBy = "asset", fetch = FetchType.LAZY)
     private List<BorrowHistory> borrowHistory;
 }
