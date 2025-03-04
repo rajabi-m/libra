@@ -14,6 +14,7 @@ import ir.mahdi.libra.repository.BorrowableAssetRepository;
 import ir.mahdi.libra.repository.UserRepository;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +33,7 @@ public class DefaultBorrowService implements BorrowService {
     }
 
     @Override
+    @Transactional
     public void borrowAsset(long assetId, BorrowAssetDto borrowAssetDto) {
         Optional<BorrowableAsset> asset = borrowableAssetRepository.findById(assetId);
         if (asset.isEmpty()) {
