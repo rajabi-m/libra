@@ -16,4 +16,17 @@ public interface BorrowHistoryRepository extends JpaRepository<BorrowHistory, Lo
             ORDER BY COUNT(b) DESC
             """)
     List<Pair<BorrowableAsset, Long>> findMostBorrowedAssetsSorted();
+
+
+    @Query("""
+            SELECT AVG(bc)
+            FROM (
+                SELECT COUNT(b) AS bc
+                FROM BorrowHistory b
+                RIGHT JOIN User u
+                ON u.id = b.user.id
+                GROUP BY u.id
+            ) AS borrowCounts
+            """)
+    Double findAverageBorrowCountPerUser();
 }

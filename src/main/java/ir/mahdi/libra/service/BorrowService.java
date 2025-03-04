@@ -11,4 +11,6 @@ public interface BorrowService {
     void returnAsset(long assetId);
 
     List<AssetCountDto> getMostBorrowedAssetsSorted();
+
+    Double getAverageBorrowCountPerUser();
 }

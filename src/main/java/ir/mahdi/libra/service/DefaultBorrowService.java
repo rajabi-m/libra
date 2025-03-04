@@ -87,4 +87,9 @@ public class DefaultBorrowService implements BorrowService {
                 .map(pair -> new AssetCountDto(AssetDto.of(pair.getFirst()), pair.getSecond()))
                 .toList();
     }
+
+    @Override
+    public Double getAverageBorrowCountPerUser() {
+        return borrowHistoryRepository.findAverageBorrowCountPerUser();
+    }
 }

@@ -27,8 +27,13 @@ public class BorrowController {
         borrowService.returnAsset(assetId);
     }
 
-    @PostMapping("/most-borrowed")
+    @GetMapping("/most-borrowed")
     private List<AssetCountDto> getMostBorrowedAssetsSorted() {
         return borrowService.getMostBorrowedAssetsSorted();
+    }
+
+    @GetMapping("/average-borrow-count")
+    private Double getAverageBorrowCountPerUser() {
+        return borrowService.getAverageBorrowCountPerUser();
     }
 }
