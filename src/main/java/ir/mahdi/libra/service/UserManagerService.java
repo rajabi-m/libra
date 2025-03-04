@@ -1,5 +1,6 @@
 package ir.mahdi.libra.service;
 
+import ir.mahdi.libra.controller.dto.BorrowHistoryDto;
 import ir.mahdi.libra.controller.dto.CreateUserDto;
 import ir.mahdi.libra.controller.dto.UserDto;
 import jakarta.validation.Valid;
@@ -18,4 +19,6 @@ public interface UserManagerService {
     void deleteUser(Long id);
 
     UserDto getUserByUsername(String username);
+
+    List<BorrowHistoryDto> getBorrowHistory(Long id);
 }

@@ -1,27 +1,26 @@
 package ir.mahdi.libra.model;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
-public class Asset {
-    private final String type;
-    private final long id;
+@Entity
+@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Asset {
+    @Id
+    @GeneratedValue
+    @Setter(AccessLevel.NONE)
+    private Long id;
     private String title;
+    private Status status = Status.AVAILABLE;
 
-    public Asset() {
-        type = this.getClass().getSimpleName();
-        id = -1;
-    }
-
-    public Asset(String title) {
-        type = this.getClass().getSimpleName();
-        id = -1;
-        this.title = title;
-    }
-
-    public Asset(long id, String title) {
-        type = this.getClass().getSimpleName();
-        this.id = id;
-        this.title = title;
+    public enum Status {
+        AVAILABLE,
+        BORROWED,
+        LOST
     }
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+public class BookDto implements AssetDto {
     private Long id;
     private String title;
     private String author;

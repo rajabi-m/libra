@@ -1,53 +1,26 @@
 package ir.mahdi.libra.controller;
 
-import ir.mahdi.libra.controller.dto.*;
-import ir.mahdi.libra.service.BorrowManagerService;
+import ir.mahdi.libra.controller.dto.BorrowAssetDto;
+import ir.mahdi.libra.service.BorrowService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/borrows")
+@RequestMapping("/borrow")
 public class BorrowController {
-    private final BorrowManagerService borrowManagerService;
+    private final BorrowService borrowService;
 
-    public BorrowController(BorrowManagerService borrowManagerService) {
-        this.borrowManagerService = borrowManagerService;
+    public BorrowController(BorrowService borrowService) {
+        this.borrowService = borrowService;
     }
 
-    @GetMapping("")
-    public List<BorrowDto> getBorrows() {
-        return borrowManagerService.getAllBorrows();
+    @PostMapping("/{assetId}")
+    private void borrowAsset(@PathVariable Long assetId, @Valid @RequestBody BorrowAssetDto borrowAssetDto) {
+        borrowService.borrowAsset(assetId, borrowAssetDto);
     }
 
-    @GetMapping("/{id}")
-    public BorrowDto getBorrow(@PathVariable Long id) {
-        return borrowManagerService.getBorrowById(id);
-    }
-
-    @PostMapping("/create")
-    public BorrowDto createBorrow(@Valid @RequestBody CreateBorrowDto createBorrowDto) {
-        return borrowManagerService.createBorrow(createBorrowDto);
-    }
-
-    @PutMapping("/update/{id}")
-    public BorrowDto updateBorrow(@PathVariable Long id, @Valid @RequestBody UpdateBookDto updateBookDto) {
-        return borrowManagerService.updateBorrow(id, updateBookDto);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteBorrow(@PathVariable Long id) {
-        borrowManagerService.deleteBorrow(id);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<BookDto> getUserBorrows(@PathVariable Long userId) {
-        return borrowManagerService.getUserBorrows(userId);
-    }
-
-    @GetMapping("/book/{bookId}")
-    public List<UserDto> getAssetBorrowers(@PathVariable Long bookId) {
-        return borrowManagerService.getAssetBorrowers(bookId);
+    @PostMapping("/return/{assetId}")
+    private void returnAsset(@PathVariable Long assetId) {
+        borrowService.returnAsset(assetId);
     }
 }

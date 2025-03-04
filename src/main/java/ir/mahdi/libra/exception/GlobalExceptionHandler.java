@@ -66,6 +66,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NotAvailableException.class)
+    public ResponseEntity<Error> handleNotAvailableException(NotAvailableException ex) {
+        return new ResponseEntity<>(Error.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 
     public record Error(List<String> errors) {
         public static Error of(String message) {

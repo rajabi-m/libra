@@ -1,29 +1,21 @@
 package ir.mahdi.libra.model;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Book extends Asset {
+@Entity
+@NoArgsConstructor
+public class Book extends BorrowableAsset {
     private String author;
     private int releaseYear;
-    private Status status = Status.AVAILABLE;
 
     public Book(String title, String author, int releaseYear) {
-        super(title);
-        this.author = author;
-        this.releaseYear = releaseYear;
-    }
-
-    public Book(long id, String title, String author, int releaseYear) {
-        super(id, title);
-        this.author = author;
-        this.releaseYear = releaseYear;
-    }
-
-    public enum Status {
-        AVAILABLE,
-        BORROWED
+        setTitle(title);
+        setAuthor(author);
+        setReleaseYear(releaseYear);
     }
 }
