@@ -18,8 +18,8 @@ public class User {
     private Long id;
     private String username;
 
-    @OneToOne(mappedBy = "borrower")
-    private BorrowableAsset borrowedAsset;
+    @OneToMany(mappedBy = "borrower")
+    private List<BorrowableAsset> borrowedAssets;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<BorrowHistory> borrowHistory;
