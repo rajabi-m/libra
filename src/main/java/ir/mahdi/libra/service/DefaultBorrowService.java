@@ -9,6 +9,7 @@ import ir.mahdi.libra.model.Asset;
 import ir.mahdi.libra.model.BorrowHistory;
 import ir.mahdi.libra.model.BorrowableAsset;
 import ir.mahdi.libra.model.User;
+import ir.mahdi.libra.repository.BorrowCountViewRepository;
 import ir.mahdi.libra.repository.BorrowHistoryRepository;
 import ir.mahdi.libra.repository.BorrowableAssetRepository;
 import ir.mahdi.libra.repository.UserRepository;
@@ -25,11 +26,13 @@ public class DefaultBorrowService implements BorrowService {
     private final BorrowableAssetRepository borrowableAssetRepository;
     private final UserRepository userRepository;
     private final BorrowHistoryRepository borrowHistoryRepository;
+    private final BorrowCountViewRepository borrowCountViewRepository;
 
-    public DefaultBorrowService(BorrowableAssetRepository borrowableAssetRepository, UserRepository userRepository, BorrowHistoryRepository borrowHistoryRepository) {
+    public DefaultBorrowService(BorrowableAssetRepository borrowableAssetRepository, UserRepository userRepository, BorrowHistoryRepository borrowHistoryRepository, BorrowCountViewRepository borrowCountViewRepository) {
         this.borrowableAssetRepository = borrowableAssetRepository;
         this.userRepository = userRepository;
         this.borrowHistoryRepository = borrowHistoryRepository;
+        this.borrowCountViewRepository = borrowCountViewRepository;
     }
 
     @Override
@@ -93,5 +96,12 @@ public class DefaultBorrowService implements BorrowService {
     @Override
     public Double getAverageBorrowCountPerUser() {
         return borrowHistoryRepository.findAverageBorrowCountPerUser();
+    }
+
+    @Override
+    public List<AssetCountDto> getAssetBorrowCount() {
+        return borrowCountViewRepository.findAll().stream()
+                .map(view -> new AssetCountDto(AssetDto.of(view.getAsset()), view.getCount()))
+                .toList();
     }
 }

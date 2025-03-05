@@ -36,4 +36,9 @@ public class BorrowController {
     private Double getAverageBorrowCountPerUser() {
         return borrowService.getAverageBorrowCountPerUser();
     }
+
+    @GetMapping("/count")
+    private List<AssetCountDto> getAssetBorrowCount() {
+        return borrowService.getAssetBorrowCount();
+    }
 }
