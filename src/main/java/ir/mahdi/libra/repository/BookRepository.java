@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Collection<Book> findByTitle(String title);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Book> findById(Long aLong);
 }
