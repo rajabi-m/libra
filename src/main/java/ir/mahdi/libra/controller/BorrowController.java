@@ -1,9 +1,12 @@
 package ir.mahdi.libra.controller;
 
+import ir.mahdi.libra.controller.dto.AssetCountDto;
 import ir.mahdi.libra.controller.dto.BorrowAssetDto;
 import ir.mahdi.libra.service.BorrowService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/borrow")
@@ -22,5 +25,20 @@ public class BorrowController {
     @PostMapping("/return/{assetId}")
     private void returnAsset(@PathVariable Long assetId) {
         borrowService.returnAsset(assetId);
+    }
+
+    @GetMapping("/most-borrowed")
+    private List<AssetCountDto> getMostBorrowedAssetsSorted() {
+        return borrowService.getMostBorrowedAssetsSorted();
+    }
+
+    @GetMapping("/average-borrow-count")
+    private Double getAverageBorrowCountPerUser() {
+        return borrowService.getAverageBorrowCountPerUser();
+    }
+
+    @GetMapping("/count")
+    private List<AssetCountDto> getAssetBorrowCount() {
+        return borrowService.getAssetBorrowCount();
     }
 }

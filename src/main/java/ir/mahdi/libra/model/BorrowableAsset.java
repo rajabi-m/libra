@@ -14,7 +14,7 @@ public abstract class BorrowableAsset extends Asset {
     private LocalDate borrowDate;
     private LocalDate returnDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "borrower_id")
     private User borrower;
 
