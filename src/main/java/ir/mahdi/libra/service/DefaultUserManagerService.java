@@ -61,7 +61,11 @@ public class DefaultUserManagerService implements UserManagerService {
 
     @Override
     public UserDto getUserByUsername(String username) {
-        return UserDto.of(userRepository.findByUsername(username));
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Cannot find user with username: " + username);
+        }
+        return UserDto.of(user.get());
     }
 
     @Override
